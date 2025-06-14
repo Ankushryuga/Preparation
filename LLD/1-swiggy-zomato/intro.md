@@ -1,1 +1,0 @@
-# System requirementfor swiggy-zomato:
