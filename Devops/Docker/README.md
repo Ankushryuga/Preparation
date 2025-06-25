@@ -19,11 +19,24 @@
       =>
       Example:
       # Dockerfile
-      FROM python:3.9
-      WORKDIR /app
-      COPY . .
-      RUN pip install -r requirements.txt
-      CMD ["python", "app.py"]
+    FROM golang:1.21
+    
+    # Set the working directory
+    WORKDIR /app
+    
+    # Copy go files
+    COPY go.mod ./
+    COPY go.sum ./
+    RUN go mod download
+    
+    COPY . .
+    
+    # Build the Go app
+    RUN go build -o app
+    
+    # Run the binary
+    CMD ["./app"]
+
 # Build Docker Image:
     => docker build -t my-python-app .
 # Run Docker Container:
@@ -32,5 +45,62 @@
     =>
     docker ps        # List running containers
     docker images    # List images
+
+
+# Dockerfile vs Docker-Compose file:
+    => 
+    Dockerfile: its a script containing instruction to build a Docker image.
+    # Dockerfile:
+    FROM golang:1.21
+
+    # set the working directory
+    WORKDIR /app
+
+    # copy go files.
+    COPY go.mod ./
+    COPY go.sum ./
+    RUN go mod download
+
+    COPY . .
+
+    # Build the go app.
+    RUN go build -o app
+
+    # Run the binary.
+    CMD ["./app"]
+    
+    # docker-compose.yml:
+    version: '3.9'
+    services:
+      app:
+        build: .
+        ports: 
+          - "8080:8080"
+        depends_on:
+          - db
+        networks:
+          - backend
+
+     db:
+      image: postgres:16
+      restart: always
+      environment: 
+        POSTGRES_USER: user
+        POSTGRES_PASSWORD: pass
+        POSTGRES_DB: mydb
+      volumes:
+        - db-data:/var/lib/postgressql/data
+      networks:
+        - backend
+
+    Volumes:
+      db-data:
+
+    networks:
+      backend:
+
+
+## Run it:
+    docker-compose up --build
 
     
