@@ -99,6 +99,11 @@
     networks:
       backend:
 
+# docker swarm:
+    =>
+    Its a container orchestration tool for clustering and scheduling Docker constainer.
+    
+
 
 ## Run it:
     docker-compose up --build
