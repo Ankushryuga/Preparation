@@ -99,13 +99,28 @@
     networks:
       backend:
 
-# docker swarm:
-    =>
-    Its a container orchestration tool for clustering and scheduling Docker constainer.
-    
-
-
 ## Run it:
     docker-compose up --build
 
+
+# docker swarm:
+    =>
+    Its a container orchestration tool for clustering and scheduling Docker constainer.
+    # To create docker swarm cluster:
+    docker swarm init
+    
+    
+# Docker networks:
+    => There are mainly 3 network drivers by default: bridge, host and none.
+    bridge network: it allows containers to communicate with each other on the same host, and outside the world through host machine network interface.
+
+
+
+# how does docker handles service discovery in swarm mode?
+    => docker provide an inbuilt service discovery mechanism, when you deploy a service to the swarm cluster, it is automatically assigned a DNS name that can be used
+    to reach the service internally.
+
+# What is docker container orchestration?
+    => it refer to management and coordination of multiple involves automating deployment scalling scheduling and monitoring.
+    
     
