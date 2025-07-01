@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  golang-service:
+    build:
+      context: ./golang-service
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    environment:
+      - DB_HOST=golang-db
+      - DB_PORT=5432
+      - DB_USER=golanguser
+      - DB_PASS=golangpass
+      - DB_NAME=golangdb
+    depends_on:
+      - golang-db
+  golang-db:
+    image: 'postgres:13'
+    restart: always
+    environment: POSTGRES_USER=golanguser POSTGRES_PASSWORD=golangpass POSTGRES_DB=golangdb
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'golang-db-data:/var/lib/postgresql/data'
+  spring-service:
+    build:
+      context: ./spring-service
+      dockerfile: Dockerfile
+    ports:
+      - '4001:4001'
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:mysql://spring-db:3306/springdb'
+      - SPRING_DATASOURCE_USERNAME=springuser
+      - SPRING_DATASOURCE_PASSWORD=springpass
+    depends_on:
+      - spring-db
+  spring-db:
+    image: 'mysql:8'
+    restart: always
+    environment: >-
+      MYSQL_ROOT_PASSWORD=rootpass MYSQL_DATABASE=springdb MYSQL_USER=springuser
+      MYSQL_PASSWORD=springpass
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'spring-db-data:/var/lib/mysql'
+volumes:
+  golang-db-data: null
+  spring-db-data: null
