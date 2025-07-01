@@ -61,7 +61,7 @@
 | `secrets`    | Secret values used during build.                    |
 
 
-# Volume Section:
+# 4.Volume Section:
 | Tag           | Description                          |
 | ------------- | ------------------------------------ |
 | `driver`      | Specify volume driver.               |
@@ -71,7 +71,7 @@
 | `name`        | Custom name for the volume.          |
 
 
-# Networks Section:
+# 5.Networks Section:
 | Tag           | Description                                        |
 | ------------- | -------------------------------------------------- |
 | `driver`      | Network driver to use (e.g., `bridge`, `overlay`). |
@@ -82,7 +82,7 @@
 | `name`        | Custom network name.                               |
 
 
-# Deploy:
+# 6.Deploy:
 | Tag              | Description                                 |
 | ---------------- | ------------------------------------------- |
 | `mode`           | `replicated` or `global`.                   |
