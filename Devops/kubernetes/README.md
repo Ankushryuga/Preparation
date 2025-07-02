@@ -31,3 +31,6 @@
     │   │   └── spring-service.yaml
     │   ├── ingress/
     │   │   └── ingress.yaml
+
+## Resources:
+https://openliberty.io/guides/kubernetes-intro.html#why-use-kubernetes
