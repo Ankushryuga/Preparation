@@ -18,3 +18,18 @@
 # Create the kubernetes configuratoin file in start directory:
     => kubernetes.yaml
     
+
+# Ensure your local cluster is running:
+    =>
+    1. Minikube: minikube start
+    2. Make sure your image is available to the cluster:
+        docker build -t system:1.0-SNAPSHOT system/.
+
+    3. Apply the kubernetes config:
+        kubectl apply -f kubernetes.yaml
+    4. check deployment status:
+        kubectl get pods
+        kubectl get services
+    5. Access your app:
+        on web:=> http://localhost:30080
+        
