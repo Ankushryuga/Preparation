@@ -42,6 +42,7 @@ type ParkingLotImplement struct{
   Booking        map[int]*BookedInformation
   NextSpaceId    int
   NextBookingId  int
+  mu             sync.Mutex        //shared mutex:::
 }
 
 type ParkingLot interface{
@@ -60,6 +61,8 @@ func NewParkingLot() *ParkingLotImplement{
 }
 
 func (p *ParkingLotImplement) AddMoreFloor(floor Floor) (int, int){
+        p.mu.Lock()
+        defer p.mu.Unlock()
   p.Floors[floor.FloorId]  = &floor
 
   for i:=0;i<floor.TotalSpace;i++{
@@ -77,10 +80,11 @@ func (p *ParkingLotImplement) AddMoreFloor(floor Floor) (int, int){
 
 
 func (p *ParkingLotImplement) BookSpace(userId string, vehicleType VehicleType) (Space, error){
-  var mu sync.Mutex  //for synchronziation:::
+  p.mu.Lock()
+  defer p.mu.Unlock()
   for _, space := range p.Spaces{
     if space.isAvailable && space.VehicleType == vehicleType {
-      mu.Lock()
+      
       space.isAvailable=false
       space.BookedBy=userId
 
@@ -92,7 +96,6 @@ func (p *ParkingLotImplement) BookSpace(userId string, vehicleType VehicleType) 
       }
       p.Booking[p.NextBookingId]=booking
       p.NextBookingId++
-      mu.Unlock()
       return *space, nil
     }
   }
@@ -101,6 +104,8 @@ func (p *ParkingLotImplement) BookSpace(userId string, vehicleType VehicleType) 
 
 
 func (p *ParkingLotImplement) GetBookedInformation(bookingId int) (BookedInformation, error){
+p.mu.Lock()
+        p.mu.Unlock()
   if booking, exists := p.Booking[bookingId]; exists{
     return *booking, nil
   }
@@ -109,6 +114,8 @@ func (p *ParkingLotImplement) GetBookedInformation(bookingId int) (BookedInforma
 
 
 func (p* ParkingLotImplement) GetAvailableSpaces(vehicleType VehicleType) []Space{
+        p.mu.Lock()
+        p.mu.Unlock()
   var available []Space
   for _, space := range p.Spaces{
     if space.isAvailable && space.VehicleType == vehicleType{
