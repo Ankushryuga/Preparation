@@ -1,28 +1,32 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1                     # Specifies the API version for the Deployment resource
+kind: Deployment                        # Declares that this resource is a Deployment
 metadata:
-  name: mynginx2
+  name: mynginx2                        # Name of the Deployment
+
 spec:
-  replicas: 1
+  replicas: 1                           # Number of desired Pod replicas (1 Pod will be created)
   selector:
-    matchLabels:
-      app: nginx
-      env: prod
-  template:
+    matchLabels:                        # This selector matches Pods with the following labels
+      app: nginx                        # Match Pods with label 'app=nginx'
+      env: prod                         # Match Pods with label 'env=prod'
+
+  template:                             # Template for the Pods managed by the Deployment
     metadata:
-      labels:
-        app: nginx
-        env: prod
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 250m
-            memory: 256Mi        
+      labels:                           # Labels to apply to each created Pod (must match selector)
+        app: nginx                      # Assign label 'app=nginx' to the Pod
+        env: prod                       # Assign label 'env=prod' to the Pod
+
+    spec:                               # Specification of the Pod's contents
+      containers:                       # List of containers (only one in this case)
+      - name: nginx                     # Name of the container
+        image: nginx                    # Docker image to use (official NGINX image from Docker Hub)
+        resources:                      # Resource requests and limits for the container
+          requests:                     # Minimum resources requested for scheduling
+            cpu: 100m                   # Request 0.1 CPU (100 millicores)
+            memory: 128Mi              # Request 128 MiB of memory
+          limits:                       # Maximum resources the container can use
+            cpu: 250m                   # Limit to 0.25 CPU (250 millicores)
+            memory: 256Mi              # Limit to 256 MiB of memory
+
         ports:
-        - containerPort: 80
+        - containerPort: 80             # Container listens on port 80 (used by NGINX)
