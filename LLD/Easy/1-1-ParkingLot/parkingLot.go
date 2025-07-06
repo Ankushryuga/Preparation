@@ -46,7 +46,7 @@ type ParkingLotImplement struct{
 }
 
 type ParkingLot interface{
-  AddMoreFloor(int) (int, int)    //it will return updated Floor count.
+  AddMoreFloor(floor Floor) (int, int)    //it will return updated Floor count.
   BookSpace(userId string, VehicleType VehicleType) (Space, error)  //it will return Space struct information.
   GetBookedInformation(bookingId int) (BookedInformation, error)    //it will return BookedInformaiton of space.
   GetAvailableSpaces(vehicleType VehicleType)[]Space
@@ -115,7 +115,7 @@ p.mu.Lock()
 
 func (p* ParkingLotImplement) GetAvailableSpaces(vehicleType VehicleType) []Space{
         p.mu.Lock()
-        p.mu.Unlock()
+        defer p.mu.Unlock()
   var available []Space
   for _, space := range p.Spaces{
     if space.isAvailable && space.VehicleType == vehicleType{
