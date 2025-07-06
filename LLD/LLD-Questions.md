@@ -44,6 +44,7 @@
     7. Explain Adapter vs Proxy vs Decorator.
     8. Implement a Builder Pattern for constructing complex objects.
 
+
 # ⚙️ Concurrency & Thread-Safety Questions
     =>
     1. Design a Rate Limiter (token bucket or leaky bucket).
