@@ -8,4 +8,17 @@
         5. Allow easy scalling up/down
         
         ## example:
-        kubectl 
+        1. kubectl create deployment myapp --image=nginx        //its imperative and it creates one pod
+
+        ## To increase replicas use scale up:
+        1. kubectl scale deployment myapp --replicas = 4    //4 pods.
+
+        ## verify: 
+        1. kubectl get deployment myapp
+        2. kubectl get pods
+        
+
+        ## Cleanup:
+
+        kubectl delete deployment myginx1
+        
