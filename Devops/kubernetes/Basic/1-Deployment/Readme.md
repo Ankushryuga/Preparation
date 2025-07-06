@@ -10,6 +10,10 @@
         ## example:
         1. kubectl create deployment myapp --image=nginx        //its imperative and it creates one pod
 
+
+        ## delcarative way (using yaml file):
+        1. kubectl create -f deploy-example-declarative.yaml
+        
         ## To increase replicas use scale up:
         1. kubectl scale deployment myapp --replicas = 4    //4 pods.
 
@@ -21,4 +25,6 @@
         ## Cleanup:
 
         kubectl delete deployment myginx1
+        # for yaml file..
+        kubectl delete deploy mynginx2
         
