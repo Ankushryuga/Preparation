@@ -6,7 +6,7 @@ metadata:
     app: nginx
     env: prod
 spec:
-  replicas: 3
+  replicas: 2  # Starting value
   selector:
     matchLabels:
       app: nginx
@@ -16,6 +16,10 @@ spec:
       labels:
         app: nginx
         env: prod
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+        prometheus.io/path: "/metrics"  # For Prometheus scraping
     spec:
       containers:
         - name: nginx
@@ -41,3 +45,7 @@ spec:
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
+
+
+
+# 📌 prometheus.io/scrape annotations let Prometheus auto-discover and scrape your app 
