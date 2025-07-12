@@ -3,25 +3,25 @@ Design a distributed database system that can store massive volumes of structure
 across multiple machines, with **high availability**, **patition-tolerance**, and **horizontal scalability**.
 
 ## High Level Architecture:
-            +------------------------+
-            |   Client Applications  |
-            +-----------+------------+
-                        |
-               +--------v--------+
-               |   Query Router  |
-               +--------+--------+
-                        |
-   +--------------------+--------------------+
-   |                    |                    |
-+--v--+            +----v----+           +---v---+
-|Node1|            | Node2   |           | Node3 |
-+--+--+            +----+----+           +---+---+
-   |                   |                    |
-+--v--+            +---v----+           +---v---+
-|Data |            | Data   |           | Data  |
-| +   |            | +      |           | +     |
-|Meta |            | Meta   |           | Meta  |
-+-----+            +--------+           +-------+
+                        +------------------------+
+                        |   Client Applications  |
+                        +-----------+------------+
+                                    |
+                           +--------v--------+
+                           |   Query Router  |
+                           +--------+--------+
+                                    |
+               +--------------------+--------------------+
+               |                    |                    |
+            +--v--+            +----v----+           +---v---+
+            |Node1|            | Node2   |           | Node3 |
+            +--+--+            +----+----+           +---+---+
+               |                   |                    |
+            +--v--+            +---v----+           +---v---+
+            |Data |            | Data   |           | Data  |
+            | +   |            | +      |           | +     |
+            |Meta |            | Meta   |           | Meta  |
+            +-----+            +--------+           +-------+
 
 
 ## Key Components:
