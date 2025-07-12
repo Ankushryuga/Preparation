@@ -27,7 +27,7 @@
     | **Consistency vs Availability** | Often tradeoffs (→ see CAP theorem).                                           |
 
 ## CAP Theorem(Brewer's Theorem)
-   In a distributed system, **you can only guarantee 2 out of 3.**
+    In a distributed system, **you can only guarantee 2 out of 3.**
     | CAP Element                 | Description                                            |
     | --------------------------- | ------------------------------------------------------ |
     | **C** – Consistency         | Every node sees the same data at the same time.        |
@@ -97,7 +97,8 @@
 
 
 ## Concensus Protocols: 
-  This algorithm used in distributed systems to ensure that multiple computers(nodes) agree on a single version of truth, even if some nodes fail or act malicisouly. 
+     This algorithm used in distributed systems to ensure that multiple computers(nodes) agree on a single version of truth,
+     even if some nodes fail or act malicisouly. 
     | Protocol  | Use Case                                         | Notes |
     | --------- | ------------------------------------------------ | ----- |
     | **Paxos** | Theoretical base; difficult to implement         |       |
