@@ -1,3 +1,4 @@
+
 # Kubernetes interview questions:
 # ✅ Key Production Considerations
     =>
@@ -34,3 +35,4 @@
 
 ## Resources:
 https://openliberty.io/guides/kubernetes-intro.html#why-use-kubernetes
+https://devopscube.com/kubernetes-tutorials-beginners/#what-is-kubernetes
