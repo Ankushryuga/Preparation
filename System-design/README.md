@@ -9,18 +9,18 @@
 - Core Features or functionality of systems: (e.g., CRUD operations)
   
 - Non Functional Requirement: It define how a system performs rather than what it does.
-  Common Non-function requirements:
-    | Category              | Description                               | Examples                                            |
-| --------------------- | ----------------------------------------- | --------------------------------------------------- |
-| **Performance**       | How fast the system responds or processes | Response time < 200ms, throughput ≥ 10K req/sec     |
-| **Scalability**       | How well the system handles growth        | Support 10× users without redesign                  |
-| **Availability**      | System uptime over time                   | 99.99% uptime (52 mins/year downtime)               |
-| **Reliability**       | Consistency of system operation           | No crashes in 6 months; retries for failed messages |
-| **Maintainability**   | Ease of updates or bug fixes              | Modular codebase, low coupling                      |
-| **Security**          | Protect data and operations               | Encryption, authentication, audit logging           |
-| **Usability**         | User-friendliness and accessibility       | Intuitive UI, WCAG compliance                       |
-| **Portability**       | Ability to run in different environments  | Deployable on AWS, Azure, and GCP                   |
-| **Testability**       | Ease of testing the system                | Unit tests, CI/CD pipelines, mockable components    |
-| **Compliance**        | Regulatory/legal constraints              | GDPR, HIPAA, PCI-DSS requirements                   |
-| **Capacity**          | Maximum limits of the system              | Supports 5M users, 1TB storage without degradation  |
-| **Disaster Recovery** | Recovery from failures or disasters       | RTO = 5 mins, RPO = 1 min                           |
+# Common Non-function requirements:
+          | Category              | Description                               | Examples                                            |
+      | --------------------- | ----------------------------------------- | --------------------------------------------------- |
+      | **Performance**       | How fast the system responds or processes | Response time < 200ms, throughput ≥ 10K req/sec     |
+      | **Scalability**       | How well the system handles growth        | Support 10× users without redesign                  |
+      | **Availability**      | System uptime over time                   | 99.99% uptime (52 mins/year downtime)               |
+      | **Reliability**       | Consistency of system operation           | No crashes in 6 months; retries for failed messages |
+      | **Maintainability**   | Ease of updates or bug fixes              | Modular codebase, low coupling                      |
+      | **Security**          | Protect data and operations               | Encryption, authentication, audit logging           |
+      | **Usability**         | User-friendliness and accessibility       | Intuitive UI, WCAG compliance                       |
+      | **Portability**       | Ability to run in different environments  | Deployable on AWS, Azure, and GCP                   |
+      | **Testability**       | Ease of testing the system                | Unit tests, CI/CD pipelines, mockable components    |
+      | **Compliance**        | Regulatory/legal constraints              | GDPR, HIPAA, PCI-DSS requirements                   |
+      | **Capacity**          | Maximum limits of the system              | Supports 5M users, 1TB storage without degradation  |
+      | **Disaster Recovery** | Recovery from failures or disasters       | RTO = 5 mins, RPO = 1 min                           |
