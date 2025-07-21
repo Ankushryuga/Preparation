@@ -24,3 +24,13 @@
       | **Compliance**        | Regulatory/legal constraints              | GDPR, HIPAA, PCI-DSS requirements                   |
       | **Capacity**          | Maximum limits of the system              | Supports 5M users, 1TB storage without degradation  |
       | **Disaster Recovery** | Recovery from failures or disasters       | RTO = 5 mins, RPO = 1 min                           |
+
+
+# Example : URL Shortener.
+          - Functional requirement: Shorten a given long URL.
+          - Non-functional requirements:
+            1. Response time < 100ms
+            2. 99.99% availability
+            3. Horizontal scalability for 1B urls
+
+          
