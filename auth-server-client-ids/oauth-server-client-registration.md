@@ -1,6 +1,4 @@
-# Write the README.md content to a downloadable file at /mnt/data/README.md
-
-content = """# Client Registration Guide — Custom OAuth2 / OIDC Server
+# Client Registration Guide — Custom OAuth2 / OIDC Server
 
 This document lists **all practical ways** to register OAuth2/OIDC clients for your **Custom Authorization Server** (Spring Authorization Server–based), with copy-pasteable examples.
 
@@ -46,38 +44,40 @@ This document lists **all practical ways** to register OAuth2/OIDC clients for y
 - Verify discovery:
   ```bash
   curl -s $ISSUER/.well-known/openid-configuration | jq .
-If required by your server, obtain a bootstrap/initial token and export it:
+  ```
+- If required by your server, obtain a **bootstrap/initial** token and export it:
+  ```bash
+  export AUTH_DCR_INITIAL_TOKEN='<your-initial-token>'
+  ```
 
-bash
-Always show details
+---
 
-Copy code
-export AUTH_DCR_INITIAL_TOKEN='<your-initial-token>'
-What to Register (quick reference)
+## What to Register (quick reference)
+
 Pick a client type and grants to match your app:
 
-App kind	client_type	Grants	Token auth method	Redirect URIs
-SPA (browser)	public	authorization_code, refresh_token	none (PKCE)	http://localhost:5174/oidc/callback
-Backend service	confidential	client_credentials	client_secret_basic or post	(none)
-Native app	public	authorization_code, refresh_token	none (PKCE)	http://127.0.0.1:3000/callback, etc.
+| App kind         | client_type     | Grants                                 | Token auth method                 | Redirect URIs                                |
+|------------------|------------------|----------------------------------------|-----------------------------------|----------------------------------------------|
+| SPA (browser)    | `public`         | `authorization_code`, `refresh_token`  | `none` (PKCE)                     | `http://localhost:5174/oidc/callback`        |
+| Backend service  | `confidential`   | `client_credentials`                   | `client_secret_basic` or `post`   | *(none)*                                     |
+| Native app       | `public`         | `authorization_code`, `refresh_token`  | `none` (PKCE)                     | `http://127.0.0.1:3000/callback`, etc.       |
 
-Scopes: openid profile email (+ your APIs, e.g., api.read, api.write).
+Scopes: `openid profile email` (+ your APIs, e.g., `api.read`, `api.write`).
 
-A) Dynamic Client Registration (DCR)
-Endpoint
-POST $ISSUER/connect/register
+---
 
-Headers
+## A) Dynamic Client Registration (DCR)
 
-Content-Type: application/json
+**Endpoint**  
+`POST $ISSUER/connect/register`
 
-If required: Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN
+**Headers**
+- `Content-Type: application/json`
+- If required: `Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN`
 
-SPA (Public + PKCE)
-bash
-Always show details
+### SPA (Public + PKCE)
 
-Copy code
+```bash
 curl -sS -i \
   -H "Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN" \
   -H "Content-Type: application/json" \
@@ -97,12 +97,10 @@ curl -sS -i \
   "token_endpoint_auth_method": "none"
 }
 JSON
-Response (example)
+```
 
-json
-Always show details
-
-Copy code
+**Response** (example)
+```json
 {
   "client_id": "43096f15-bbbc-446d-a51e-81be707f0f31",
   "client_name": "SPA PKCE (localhost)",
@@ -113,13 +111,13 @@ Copy code
   "response_types": ["code"],
   "scope": "openid profile email"
 }
-Copy client_id for your SPA config.
+```
 
-Backend (Confidential, Client Credentials)
-bash
-Always show details
+> Copy `client_id` for your SPA config.
 
-Copy code
+### Backend (Confidential, Client Credentials)
+
+```bash
 curl -sS -i \
   -H "Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN" \
   -H "Content-Type: application/json" \
@@ -132,13 +130,13 @@ curl -sS -i \
   "scope": "api.read"
 }
 JSON
-Response includes client_secret (store securely).
+```
 
-Native App (Loopback)
-bash
-Always show details
+**Response** includes `client_secret` (store securely).
 
-Copy code
+### Native App (Loopback)
+
+```bash
 curl -sS -i \
   -H "Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN" \
   -H "Content-Type: application/json" \
@@ -156,11 +154,11 @@ curl -sS -i \
   "token_endpoint_auth_method": "none"
 }
 JSON
-Multiple Redirect URIs
-json
-Always show details
+```
 
-Copy code
+### Multiple Redirect URIs
+
+```json
 "redirect_uris": [
   "http://localhost:5174/oidc/callback",
   "http://10.201.240.239:5174/oidc/callback"
@@ -169,39 +167,34 @@ Copy code
   "http://localhost:5174/",
   "http://10.201.240.239:5174/"
 ]
-Update / Delete (if implemented)
+```
+
+### Update / Delete (if implemented)
+
 If your server supports RFC 7592:
 
-Read
+- **Read**
+  ```
+  GET $ISSUER/connect/register/{client_id}
+  ```
+- **Update**
+  ```
+  PUT $ISSUER/connect/register/{client_id}
+  Content-Type: application/json
+  Authorization: Bearer <management token>
+  ```
+- **Delete**
+  ```
+  DELETE $ISSUER/connect/register/{client_id}
+  ```
 
-arduino
-Always show details
+---
 
-Copy code
-GET $ISSUER/connect/register/{client_id}
-Update
+## B) Custom Admin API (`/admin/clients`)
 
-bash
-Always show details
-
-Copy code
-PUT $ISSUER/connect/register/{client_id}
-Content-Type: application/json
-Authorization: Bearer <management token>
-Delete
-
-arduino
-Always show details
-
-Copy code
-DELETE $ISSUER/connect/register/{client_id}
-B) Custom Admin API (/admin/clients)
 If your deployment exposes a simpler admin API guarded by a fixed token:
 
-bash
-Always show details
-
-Copy code
+```bash
 curl -sS -i -X POST $ISSUER/admin/clients \
   -H "Authorization: Bearer dev-bootstrap-token" \
   -H "Content-Type: application/json" \
@@ -212,23 +205,23 @@ curl -sS -i -X POST $ISSUER/admin/clients \
     "post_logout_redirect_uris": ["http://localhost:5174/"],
     "scope": "openid profile email"
   }'
+```
+
 Typical verbs (if implemented):
-
-pgsql
-Always show details
-
-Copy code
+```
 GET    /admin/clients
 GET    /admin/clients/{client_id}
 PUT    /admin/clients/{client_id}
 DELETE /admin/clients/{client_id}
-C) Programmatic Seeding (Java @Startup)
+```
+
+---
+
+## C) Programmatic Seeding (Java @Startup)
+
 Register clients on app startup (great for dev/test fixtures).
 
-java
-Always show details
-
-Copy code
+```java
 @Bean
 CommandLineRunner seedClients(RegisteredClientRepository repo) {
   return args -> {
@@ -261,15 +254,16 @@ CommandLineRunner seedClients(RegisteredClientRepository repo) {
     if (((JdbcRegisteredClientRepository) repo).findByClientId("go-backend") == null) repo.save(backend);
   };
 }
-D) SQL Seeding (Flyway/Liquibase)
-Insert directly into oauth2_registered_client. Match your SAS version’s schema (inspect one row created by code to copy the exact formats).
+```
 
-SPA (public)
+---
 
-sql
-Always show details
+## D) SQL Seeding (Flyway/Liquibase)
 
-Copy code
+Insert directly into `oauth2_registered_client`. **Match your SAS version’s schema** (inspect one row created by code to copy the exact formats).
+
+**SPA (public)**
+```sql
 INSERT INTO oauth2_registered_client (
   id, client_id, client_id_issued_at, client_secret, client_secret_expires_at,
   client_name, client_authentication_methods, authorization_grant_types,
@@ -288,12 +282,10 @@ INSERT INTO oauth2_registered_client (
   '{"requireProofKey":true}',
   '{}'
 );
-Backend (confidential)
+```
 
-sql
-Always show details
-
-Copy code
+**Backend (confidential)**
+```sql
 INSERT INTO oauth2_registered_client (
   id, client_id, client_id_issued_at, client_secret, client_name,
   client_authentication_methods, authorization_grant_types, scopes, client_settings, token_settings
@@ -309,28 +301,28 @@ INSERT INTO oauth2_registered_client (
   '{}',
   '{}'
 );
-Column types differ slightly by SAS version (JSON vs delimited text). Use your schema as the source of truth.
+```
 
-E) Postman / GUI
-Request: POST $ISSUER/connect/register
+> Column types differ slightly by SAS version (JSON vs delimited text). Use your schema as the source of truth.
 
-Headers:
+---
 
-Content-Type: application/json
+## E) Postman / GUI
 
-Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN (if required)
+- Request: `POST $ISSUER/connect/register`
+- Headers:
+  - `Content-Type: application/json`
+  - `Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN` (if required)
+- Body: JSON from the curl examples above.
+- Save the response (`client_id`, and `client_secret` if confidential).
 
-Body: JSON from the curl examples above.
+---
 
-Save the response (client_id, and client_secret if confidential).
+## F) Shell Script / Makefile
 
-F) Shell Script / Makefile
 Keep a repeatable script for teammates/CI:
 
-bash
-Always show details
-
-Copy code
+```bash
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -350,49 +342,54 @@ curl -sS -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
   "token_endpoint_auth_method": "none"
 }
 JSON
-Troubleshooting
-401 {"error":"missing bearer"}
-DCR requires the bootstrap token. Add Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN, or disable the requirement in dev.
+```
 
-400 invalid_redirect_uri
-Redirect must match exactly (scheme, host, port, path). Register all you actually use.
+---
 
-Issuer mismatch at runtime
-Your SPA/API must use the exact issuer string shown in discovery.
+## Troubleshooting
 
-CORS during registration (from browser)
-Prefer cURL/Postman for DCR. If calling from a browser, ensure Access-Control-Allow-Origin includes your origin.
+- **401 `{"error":"missing bearer"}`**  
+  DCR requires the bootstrap token. Add `Authorization: Bearer $AUTH_DCR_INITIAL_TOKEN`, or disable the requirement in dev.
 
-Secret handling
-For confidential clients, store secrets securely (env/secret manager). Don’t commit them.
+- **400 `invalid_redirect_uri`**  
+  Redirect must match exactly (scheme, host, port, path). Register all you actually use.
 
-Security Notes
-Use PKCE for public clients (SPAs, native apps).
+- **Issuer mismatch at runtime**  
+  Your SPA/API must use the exact `issuer` string shown in discovery.
 
-Use client secrets only for confidential backends you control.
+- **CORS during registration (from browser)**  
+  Prefer cURL/Postman for DCR. If calling from a browser, ensure `Access-Control-Allow-Origin` includes your origin.
 
-Limit scopes to what the app needs.
+- **Secret handling**  
+  For confidential clients, store secrets securely (env/secret manager). Don’t commit them.
 
-Rotate secrets periodically; remove unused clients.
+---
 
-Prefer HTTPS and stable hostnames in non-dev environments.
+## Security Notes
 
-Client Metadata Field Reference
-Field	Type/Example	Notes
-client_name	"My SPA"	Display name
-client_type	"public" \	"confidential"
-redirect_uris	["http://localhost:5174/oidc/callback"]	Required for code flow
-post_logout_redirect_uris	["http://localhost:5174/"]	For RP-initiated logout (if supported)
-grant_types	["authorization_code","refresh_token"]	SPA; or ["client_credentials"] backend
-response_types	["code"]	Code flow
-scope	"openid profile email api.read"	Space-delimited
-token_endpoint_auth_method	"none" \	"client_secret_basic"
-client_uri, logo_uri	URLs	Optional metadata
-contacts	["dev@team.test"]	Optional metadata
+- Use **PKCE** for public clients (SPAs, native apps).
+- Use **client secrets** only for confidential backends you control.
+- Limit scopes to what the app needs.
+- Rotate secrets periodically; remove unused clients.
+- Prefer **HTTPS** and stable hostnames in non-dev environments.
 
-End of file.
-"""
-with open("/mnt/data/README.md", "w", encoding="utf-8") as f:
-f.write(content)
-print("Wrote /mnt/data/README.md")
+---
 
+## Client Metadata Field Reference
+
+| Field                          | Type/Example                               | Notes                                  |
+|--------------------------------|--------------------------------------------|----------------------------------------|
+| `client_name`                  | `"My SPA"`                                 | Display name                            |
+| `client_type`                  | `"public"` \\| `"confidential"`             | Present in custom/admin APIs            |
+| `redirect_uris`                | `["http://localhost:5174/oidc/callback"]`  | Required for code flow                  |
+| `post_logout_redirect_uris`    | `["http://localhost:5174/"]`               | For RP-initiated logout (if supported)  |
+| `grant_types`                  | `["authorization_code","refresh_token"]`   | SPA; or `["client_credentials"]` backend|
+| `response_types`               | `["code"]`                                 | Code flow                               |
+| `scope`                        | `"openid profile email api.read"`          | Space-delimited                         |
+| `token_endpoint_auth_method`   | `"none"` \\| `"client_secret_basic"`        | SPA uses `none`; backend uses secret    |
+| `client_uri`, `logo_uri`       | URLs                                       | Optional metadata                       |
+| `contacts`                     | `["dev@team.test"]`                        | Optional metadata                       |
+
+---
+
+**End of file.**
